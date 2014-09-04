@@ -52,16 +52,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         var button: UIButton = UIButton(frame: CGRectMake(0, 0, 30, 30))
         button.setImage(UIImage(named: "vertical.png"), forState: UIControlState.Normal)
         button.addTarget(self, action: Selector("openMenu:"), forControlEvents: UIControlEvents.TouchUpInside)
-        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -16)
         
         var leftButton: UIButton = UIButton(frame: CGRectMake(0, 0, 30, 30))
         leftButton.setImage(UIImage(named: "1408585283_menu-alt.png"), forState: UIControlState.Normal)
         leftButton.addTarget(navController, action: Selector("toggleLeftMenu"), forControlEvents: UIControlEvents.TouchUpInside)
-        
-        leftButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
 
         
         var rightBarButtonItem: UIBarButtonItem = UIBarButtonItem(customView: button)
+        rightBarButtonItem.imageInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         SlideNavigationController.sharedInstance().rightBarButtonItem = rightBarButtonItem
         
         var leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(customView: leftButton)
@@ -101,9 +99,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                     self.imageCache[urlString] = image
                     if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath){
                         var imgView: UIImageView = cellToUpdate.viewWithTag(2) as UIImageView
-                        // imgView.layer.cornerRadius = 3.0;
+                        imgView.layer.cornerRadius = 3.0;
                         imgView.layer.borderColor = UIColor.grayColor().CGColor
-                        imgView.layer.borderWidth = 1.0
+                        imgView.layer.borderWidth = 2.0
                         imgView.contentMode = UIViewContentMode.ScaleAspectFit
                         imgView.image = image
                     }
@@ -159,9 +157,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         var roundedView : UIView = UIView(frame: CGRectMake(5 , 5, cell.contentView.bounds.width-10, 110))
         roundedView.backgroundColor = UIColor.whiteColor()
         roundedView.layer.masksToBounds = true
-        roundedView.layer.borderColor = UIColor(red: 216.0/255.0, green: 216.0/255.0, blue: 216.0/255.0, alpha: 1.0).CGColor
-        roundedView.layer.borderWidth = 1.0
-        roundedView.layer.cornerRadius = 2.0
+        roundedView.layer.cornerRadius = 3.0
         cell.contentView.addSubview(roundedView)
         cell.contentView.sendSubviewToBack(roundedView)
     }
@@ -171,7 +167,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        if segue.identifier == "apDetailViewSegue"{
+        if segue != nil && segue.identifier != nil && segue.identifier == "apDetailViewSegue"{
             var destVC = segue.destinationViewController as APDetailViewController
             destVC.selectedAupairId = apList[self.tbView.indexPathForSelectedRow().row]["AupairKey"] as String
         }

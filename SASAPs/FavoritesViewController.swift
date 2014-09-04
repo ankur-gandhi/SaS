@@ -16,6 +16,6 @@ class FavoritesViewController: UIViewController {
         super.viewDidLoad()
         
         // Creating a custom bar button for right menu
-        menuButton.addTarget(SlideNavigationController.sharedInstance(), action: Selector("toggleLeftMenu"), forControlEvents: UIControlEvents.TouchUpInside)
+        //menuButton.addTarget(SlideNavigationController.sharedInstance(), action: Selector("toggleLeftMenu"), forControlEvents: UIControlEvents.TouchUpInside)
     }
 }

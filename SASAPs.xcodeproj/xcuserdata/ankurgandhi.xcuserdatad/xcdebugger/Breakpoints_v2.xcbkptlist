@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SASAPs/ViewController.swift"
-            timestampString = "430991704.457549"
+            timestampString = "431438142.902456"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
             landmarkName = "tableView(_:cellForRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -644,7 +644,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SASAPs/APDetailViewController.swift"
-            timestampString = "431212178.933483"
+            timestampString = "431438142.902456"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "40"
@@ -681,6 +681,96 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "9"
             endingLineNumber = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SASAPs/FiltersController.swift"
+            timestampString = "431348696.293204"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
+            landmarkName = "FiltersController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SASAPs.FiltersController.verticalTabBar.getter : weak Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.JJTabBarView&gt;"
+                  moduleName = "SASAPs"
+                  urlString = "file:///Users/ankurgandhi/Documents/IOSApps/SASAPs/SASAPs/FiltersController.swift"
+                  timestampString = "431348570.193263"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "12">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SASAPs.FiltersController.verticalTabBar.setter : weak Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.JJTabBarView&gt;"
+                  moduleName = "SASAPs"
+                  urlString = "file:///Users/ankurgandhi/Documents/IOSApps/SASAPs/SASAPs/FiltersController.swift"
+                  timestampString = "431348570.193578"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SASAPs.FiltersController.init (SASAPs.FiltersController.Type)(nibName : Swift.ImplicitlyUnwrappedOptional&lt;Swift.String&gt;, bundle : Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.NSBundle&gt;) -&gt; SASAPs.FiltersController"
+                  moduleName = "SASAPs"
+                  urlString = "file:///Users/ankurgandhi/Documents/IOSApps/SASAPs/SASAPs/FiltersController.swift"
+                  timestampString = "431348570.193852"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "214">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SASAPs.FiltersController.init (SASAPs.FiltersController.Type)() -&gt; SASAPs.FiltersController"
+                  moduleName = "SASAPs"
+                  urlString = "file:///Users/ankurgandhi/Documents/IOSApps/SASAPs/SASAPs/FiltersController.swift"
+                  timestampString = "431348570.19418"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "180">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SASAPs/FiltersController.swift"
+            timestampString = "431521576.730358"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
+            landmarkName = "FiltersController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

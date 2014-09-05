@@ -35,8 +35,8 @@ class UtilityController {
     
     class var APIURL: String{
         get{
-            //return "http://10.39.42.51"
-            return "http://10.0.0.8"
+            return "http://10.39.42.51"
+            //return "http://10.0.0.8"
         }
     }
     

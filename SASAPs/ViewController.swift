@@ -16,7 +16,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var api = APIController()
     var apList = NSArray()
     var imageCache : Dictionary<String, UIImage> = Dictionary<String,UIImage>()
-    
+    var hud: MBProgressHUD? = nil
     
     func openLoginView() {
         var storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -31,15 +31,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         self.view.setNeedsDisplay()
     }
     
-    @IBAction func openMenu(sender: UIButton) {
+    func openMenu(sender: UIButton) {
         KxMenu.showMenuInView(self.parentViewController.view, fromRect: sender.frame, menuItems: UtilityController.getMenuItems(self))
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         api.delegate = self
+        UtilityController.LoadingFunctions(self.view, show: true)
         api.get(UtilityController.APIURL + "/api/IOSApi/GetAupairs")
         
         var leftMenu : MenuController = MenuController()
@@ -78,7 +77,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func slideNavigationControllerShouldDisplayRightMenu()-> Bool{
         return true
     }
-
     
     func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
         
@@ -121,7 +119,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         dispatch_async(dispatch_get_main_queue(), {
-            UtilityController.prepareAPThumbnailCell(cell, ap: ap, tar: self)
+            Cell.prepareAPThumbnailCell(cell, ap: ap, tar: self)
         })
         
         return cell
@@ -177,7 +175,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         apList = results as NSArray
         dispatch_async(dispatch_get_main_queue(), {
             self.tbView.reloadData()
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            UtilityController.LoadingFunctions(nil, show: false)
         })
     }
     

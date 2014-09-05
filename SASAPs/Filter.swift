@@ -8,7 +8,11 @@
 
 import Foundation
 
-class Filter{
+func == (lhs: Filter, rhs: Filter) -> Bool{
+    return lhs.value == rhs.value
+}
+
+class Filter: Equatable{
     var name: String
     var value: String
     
@@ -16,4 +20,5 @@ class Filter{
         self.name = name
         self.value = value
     }
+
 }

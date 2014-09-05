@@ -11,8 +11,9 @@ import Foundation
 class FiltersController : UIViewController,UITableViewDataSource, UITableViewDelegate, JJTabBarControllerDelegate{
     
     
-    var filters : Dictionary<String,[Filter]> = UtilityController.GetFiltersDictionary()
+    var filtersLkp = UtilityController.GetFiltersDictionary()
     var selectedFilterCategory = ""
+    var appliedFilters = OrderedDictionary<String,[Filter]>()
     
     @IBOutlet weak var filtersTableView: UITableView!
     @IBOutlet weak var verticalTabBar: JJTabBarView!
@@ -24,7 +25,7 @@ class FiltersController : UIViewController,UITableViewDataSource, UITableViewDel
         var tabViewsArray: Array = []
         var keyCount: Int = 0
         var firstBtn : UIButton = UIButton()
-        for key in filters.keys{
+        for key in filtersLkp.keys{
             var btn = UIButton(frame: CGRectMake(0, 0, 100, 50))
             btn.setTitle(key, forState: UIControlState.Normal)
             btn.addTarget(self, action: Selector("btnClicked:"), forControlEvents: UIControlEvents.TouchUpInside)
@@ -51,7 +52,7 @@ class FiltersController : UIViewController,UITableViewDataSource, UITableViewDel
     
     func btnClicked(sender: UIButton){
         var keyCount: Int = 0
-        for key in filters.keys{
+        for key in filtersLkp.keys{
             if(sender.tag == (keyCount + 100)){
                 sender.backgroundColor = self.filtersTableView.backgroundColor
                 sender.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
@@ -73,25 +74,15 @@ class FiltersController : UIViewController,UITableViewDataSource, UITableViewDel
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "filterCell")
         }
         
-        removeSubViews(cell)
-        var lbl = UILabel(frame: CGRectMake(10, 10, 100, 50))
-        var filterVal : [Filter] = filters[selectedFilterCategory]! as [Filter]
-        lbl.text = filterVal[indexPath.row].name
-        lbl.sizeToFit()
-        lbl.setNeedsDisplay()
-        lbl.tag = 1
-        cell.addSubview(lbl)
-        
-        var uncheckImg = UIImage(named: "uncheck")
-        var recognizer = UITapGestureRecognizer(target: self, action:Selector("tapDetected:"))
-        var imgView = UIImageView(image: uncheckImg)
-        imgView.frame.origin = CGPoint(x: UIScreen.mainScreen().bounds.size.width - 150, y: 8)
-        imgView.userInteractionEnabled = true
-        imgView.addGestureRecognizer(recognizer)
-        imgView.tag = 2
-        cell.addSubview(imgView)
-        
+        Cell.prepareFilterCell(cell, selectedFilterCategory: selectedFilterCategory, indexPath: indexPath, filters: filtersLkp, tar: self)
         return cell
+    }
+    
+    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+        if(filtersLkp != nil && filtersLkp[selectedFilterCategory] != nil){
+            return filtersLkp[selectedFilterCategory]!.count
+        }
+        return 0
     }
     
     func tapDetected(recognizer: UITapGestureRecognizer){
@@ -107,24 +98,46 @@ class FiltersController : UIViewController,UITableViewDataSource, UITableViewDel
                 }else{
                     imgView.image = nonSelectedImage
                 }
-            }else{
-                println("cell not found")
             }
+            addToAppliedFilters(tapIndexPath!)
         }
     }
     
-    func removeSubViews(cell: UITableViewCell){
-        for sv: AnyObject in cell.subviews{
-            if ((sv is UILabel) || (sv is UIImageView)){
-                sv.removeFromSuperview()
+    func addToAppliedFilters(indexPath: NSIndexPath){
+        
+        var selectedFilter : Filter? = nil
+        if var values = filtersLkp[selectedFilterCategory]{
+            selectedFilter = values[indexPath.row]
+        }
+
+        if(contains(appliedFilters.keys, self.selectedFilterCategory)){
+            //add or remove applied filter
+            if selectedFilter != nil{
+                if var appliedFiltersArray = appliedFilters[selectedFilterCategory] {
+                    
+                    // remove it if it is already present.
+                    // add if if it does not exist
+                    if let index = find(appliedFiltersArray, selectedFilter!){
+                        appliedFiltersArray.removeAtIndex(index)
+                    }
+                    else{
+                        appliedFiltersArray.append(selectedFilter!)
+                    }
+                    appliedFilters[selectedFilterCategory] = appliedFiltersArray
+                }
             }
         }
-    }
-    
-    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
-        if(filters != nil && filters[selectedFilterCategory] != nil){
-            return filters[selectedFilterCategory]!.count
+        else{
+            
+            //If selected category does not exists then add it with selected filter
+            if(selectedFilter != nil){
+                var appliedFiltersArray = [Filter]()
+                appliedFiltersArray.append(selectedFilter!)
+                appliedFilters[selectedFilterCategory] = appliedFiltersArray
+            }
+            
         }
-        return 0
+        
+        println(appliedFilters.keys)
     }
 }

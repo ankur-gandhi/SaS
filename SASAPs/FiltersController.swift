@@ -114,7 +114,6 @@ class FiltersController : UIViewController,UITableViewDataSource, UITableViewDel
             //add or remove applied filter
             if selectedFilter != nil{
                 if var appliedFiltersArray = appliedFilters[selectedFilterCategory] {
-                    
                     // remove it if it is already present.
                     // add if if it does not exist
                     if let index = find(appliedFiltersArray, selectedFilter!){

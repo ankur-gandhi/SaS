@@ -354,7 +354,7 @@
 
 - (void)prepareTabBarChildsArray {
     NSMutableArray *array = [NSMutableArray array];
-    for (UIButton *button in self.tabBar.matrix.buttonsArray) {
+    for (NSInteger i=0; i < self.tabBar.matrix.buttonsArray.count; i++) {
         [array addObject:[NSNull null]];
     }
     _tabBarChilds = array;

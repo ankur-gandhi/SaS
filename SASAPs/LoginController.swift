@@ -20,7 +20,7 @@ class LoginController:UIViewController, APIControllerProtocol{
     }
     
     func closeLoginView(){
-        self.presentingViewController.dismissViewControllerAnimated(true, completion: nil)
+        self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func buttonLoginClicked(sender: UIButton) {

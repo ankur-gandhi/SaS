@@ -34,12 +34,12 @@ class APDetailViewController: UIViewController, UICollectionViewDataSource, UICo
         //println(selectedAupairId)
         api.get(UtilityController.APIURL + "/api/IOSApi/GetAupairPhotos?aupairkey=" + selectedAupairId)
         api.delegate = self
-        self.navigationController.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
     }
     
-    func collectionView(collectionView: UICollectionView!, cellForItemAtIndexPath indexPath: NSIndexPath!) -> UICollectionViewCell! {
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        var cell: UICollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(thumbCellIdentifier, forIndexPath: indexPath) as UICollectionViewCell
+        var cell: UICollectionViewCell? = collectionView.dequeueReusableCellWithReuseIdentifier(thumbCellIdentifier, forIndexPath: indexPath) as? UICollectionViewCell
         
         if(cell == nil){
             cell = UICollectionViewCell()
@@ -64,11 +64,11 @@ class APDetailViewController: UIViewController, UICollectionViewDataSource, UICo
 
         })
         
-        return cell
+        return cell!
         
     }
     
-    func collectionView(collectionView: UICollectionView!, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return apImageDataSource.count
     }
 
@@ -99,14 +99,14 @@ class APDetailViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func SelectCurrentImage(indexPath: NSIndexPath, unselectLastImage: Bool){
-        var cell: UICollectionViewCell = self.thumbnailCollectionView.cellForItemAtIndexPath(indexPath) as UICollectionViewCell
+        var cell: UICollectionViewCell = self.thumbnailCollectionView.cellForItemAtIndexPath(indexPath) as UICollectionViewCell!
         
         var imgView : UIImageView = cell.viewWithTag(2) as UIImageView
         imgView.layer.borderWidth = 2
         imgView.layer.borderColor = UIColor.redColor().CGColor
         
         if(unselectLastImage ){
-            if(lastSelectedImageIndexPath != nil  && indexPath.compare(self.lastSelectedImageIndexPath) != NSComparisonResult.OrderedSame){
+            if(lastSelectedImageIndexPath? != nil  && indexPath.compare(self.lastSelectedImageIndexPath!) != NSComparisonResult.OrderedSame){
                 if let lastcell = self.thumbnailCollectionView.cellForItemAtIndexPath(lastSelectedImageIndexPath!){
                     imgView = lastcell.viewWithTag(2) as UIImageView
                     imgView.layer.cornerRadius = 3.0;
@@ -117,13 +117,13 @@ class APDetailViewController: UIViewController, UICollectionViewDataSource, UICo
         }
     }
     
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         
         return UIEdgeInsetsMake(0,0,0,0)
     }
     
  
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, sizeForItemAtIndexPath indexPath: NSIndexPath!) -> CGSize {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
         return CGSize(width: 80, height: 80)
     }

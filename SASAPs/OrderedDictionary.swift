@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct OrderedDictionary<Tk: Hashable, Tv> {
+class OrderedDictionary<Tk: Hashable, Tv> {
     var keys: Array<Tk> = []
     var values: Dictionary<Tk,Tv> = [:]
     

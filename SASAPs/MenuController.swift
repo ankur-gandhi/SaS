@@ -16,31 +16,32 @@ class MenuController : UITableViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
     }
     
-    override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         var tableCell: UITableViewCell = UITableViewCell(frame: CGRectMake(0, 0, 100, 70))
         return tableCell
     }
     
-    override func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
-        
-        if(indexPath.compare(self.expandedIndexPath) == NSComparisonResult.OrderedSame){
-            return 100
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if(self.expandedIndexPath != nil){
+            if(indexPath.compare(self.expandedIndexPath!) == NSComparisonResult.OrderedSame){
+                return 100
+            }
         }
         return 54
     }
     
-    override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.beginUpdates()
-        if(indexPath.compare(self.expandedIndexPath) == NSComparisonResult.OrderedSame){
+        if(indexPath.compare(self.expandedIndexPath!) == NSComparisonResult.OrderedSame){
             self.expandedIndexPath = nil
         }else{
             self.expandedIndexPath = indexPath

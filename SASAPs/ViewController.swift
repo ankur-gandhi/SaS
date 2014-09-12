@@ -9,14 +9,13 @@
 import UIKit
 import Foundation
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, APIControllerProtocol {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, APIControllerProtocol {
     
     @IBOutlet weak var tbView: UITableView!
     
     var api = APIController()
     var apList = NSArray()
     var imageCache : Dictionary<String, UIImage> = Dictionary<String,UIImage>()
-    var hud: MBProgressHUD? = nil
     
     func openLoginView() {
         var storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -32,14 +31,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func openMenu(sender: UIButton) {
-        KxMenu.showMenuInView(self.parentViewController.view, fromRect: sender.frame, menuItems: UtilityController.getMenuItems(self))
+        KxMenu.showMenuInView(self.parentViewController!.view, fromRect: sender.frame, menuItems: UtilityController.getMenuItems(self))
     }
     
     override func viewDidLoad() {
+        //println("in view load")
         super.viewDidLoad()
-        api.delegate = self
-        UtilityController.LoadingFunctions(self.view, show: true)
-        api.get(UtilityController.APIURL + "/api/IOSApi/GetAupairs")
         
         var leftMenu : MenuController = MenuController()
         var navController = SlideNavigationController.sharedInstance()
@@ -65,6 +62,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         SlideNavigationController.sharedInstance().leftBarButtonItem = leftBarButtonItem
     }
     
+    override func viewDidAppear(animated: Bool) {
+        //println("view appeared")
+        api.delegate = self
+        UtilityController.LoadingFunctions(self.view, show: true)
+        //api.get(UtilityController.APIURL + "/api/IOSApi/GetAupairs")
+        api.post(UtilityController.APIURL + "/api/IOSApi/GetAupairs", params: FiltersController.PreviousAppliedFilters)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -78,7 +83,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         return true
     }
     
-    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("APThumbNailCell") as UITableViewCell
         let ap: AnyObject = self.apList[indexPath.row]
@@ -88,27 +94,28 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         var image = self.imageCache[urlString]
         
         if(image == nil){
-            var imgUrl: NSURL = NSURL(string: urlString)
-            let request : NSURLRequest = NSURLRequest(URL: imgUrl)
-            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler:{
-                (response: NSURLResponse!, data: NSData!, error:NSError!) -> Void in
-                if error == nil {
-                    image = UIImage(data: data)
-                    self.imageCache[urlString] = image
-                    if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath){
-                        var imgView: UIImageView = cellToUpdate.viewWithTag(2) as UIImageView
-                        imgView.layer.cornerRadius = 3.0;
-                        imgView.layer.borderColor = UIColor.grayColor().CGColor
-                        imgView.layer.borderWidth = 2.0
-                        imgView.contentMode = UIViewContentMode.ScaleAspectFit
-                        imgView.image = image
+            var imgUrl: NSURL? = NSURL(string: urlString)
+            if(imgUrl != nil){
+                let request : NSURLRequest = NSURLRequest(URL: imgUrl!)
+                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler:{
+                    (response: NSURLResponse!, data: NSData!, error:NSError!) -> Void in
+                    if error == nil {
+                        image = UIImage(data: data)
+                        self.imageCache[urlString] = image
+                        if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath){
+                            var imgView: UIImageView = cellToUpdate.viewWithTag(2) as UIImageView
+                            imgView.layer.cornerRadius = 3.0;
+                            imgView.layer.borderColor = UIColor.grayColor().CGColor
+                            imgView.layer.borderWidth = 2.0
+                            imgView.contentMode = UIViewContentMode.ScaleAspectFit
+                            imgView.image = image
+                        }
+                    }else{
+                        println("Error : \(error.localizedDescription)")
                     }
-                }else{
-                    println("Error : \(error.localizedDescription)")
-                }
-            })
+                })
+            }
         }else{
-            
             dispatch_async(dispatch_get_main_queue(), {
                 if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath){
                     var imgView: UIImageView = cellToUpdate.viewWithTag(2) as UIImageView
@@ -118,10 +125,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             })
         }
         
-        dispatch_async(dispatch_get_main_queue(), {
-            Cell.prepareAPThumbnailCell(cell, ap: ap, tar: self)
-        })
-        
+        Cell.prepareAPThumbnailCell(cell, ap: ap, tar: self)
         return cell
 
     }
@@ -133,10 +137,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         if(tbView != nil){
             //var tbView : UITableView = tblView!
-            var hitPoint: CGPoint = recognizer.view.convertPoint(CGPointZero, toView: tbView)
+            var hitPoint: CGPoint = recognizer.view!.convertPoint(CGPointZero, toView: tbView)
             var tapIndexPath: NSIndexPath? = tbView.indexPathForRowAtPoint(hitPoint)
             if(tapIndexPath != nil){
-                if let cellToUpdate = tbView.cellForRowAtIndexPath(tapIndexPath){
+                if let cellToUpdate = tbView.cellForRowAtIndexPath(tapIndexPath!){
                     var imgView: UIImageView = cellToUpdate.viewWithTag(7) as UIImageView
                     if(imgView.image == nonSelectedImage){
                         imgView.image = selectedImage
@@ -160,19 +164,25 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         cell.contentView.sendSubviewToBack(roundedView)
     }
     
-    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return apList.count
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        if segue != nil && segue.identifier != nil && segue.identifier == "apDetailViewSegue"{
-            var destVC = segue.destinationViewController as APDetailViewController
-            destVC.selectedAupairId = apList[self.tbView.indexPathForSelectedRow().row]["AupairKey"] as String
+    override func prepareForSegue(segue: UIStoryboardSegue?, sender: AnyObject?) {
+        if segue != nil && segue?.identifier != nil && segue?.identifier == "apDetailViewSegue"{
+            var destVC = segue?.destinationViewController as APDetailViewController
+            destVC.selectedAupairId = apList[self.tbView.indexPathForSelectedRow()!.row]["AupairKey"] as String
         }
     }
-    
+
     func didReceiveAPIResults(results: AnyObject) {
-        apList = results as NSArray
+        var err: NSError?
+//        var jsonResult = NSJSONSerialization.JSONObjectWithData(results as NSData, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSArray
+//        if(err != nil) {
+//            // If there is an error parsing JSON, print it to the console
+//            println("JSON Error \(err!.localizedDescription)")
+//        }
+//        apList = jsonResult as NSArray
         dispatch_async(dispatch_get_main_queue(), {
             self.tbView.reloadData()
             UtilityController.LoadingFunctions(nil, show: false)

@@ -41,14 +41,14 @@ class UtilityController {
     }
     
     class func removeSubViews(cell: UITableViewCell, tagsToRemove: [Int]){
-        for sv: AnyObject in cell.subviews{
+        for sv: AnyObject in cell.contentView.subviews{
             if (contains(tagsToRemove, sv.tag)){
                 sv.removeFromSuperview()
             }
         }
     }
     
-    class func GetFiltersDictionary() -> OrderedDictionary<String, [Filter]>{
+    class func GetFiltersDictionary() -> OrderedDictionary<String, [Filter]>?{
         
         var filterDict : OrderedDictionary<String, [Filter]> = OrderedDictionary<String, [Filter]>()
                 
@@ -58,10 +58,23 @@ class UtilityController {
         return filterDict
     }
     
+    class func JSONStringify(jsonObj: AnyObject) -> String {
+        var e: NSError?
+        let jsonData: NSData! = NSJSONSerialization.dataWithJSONObject(
+            jsonObj,
+            options: NSJSONWritingOptions(0),
+            error: &e)
+        if e != nil {
+            return ""
+        } else {
+            return NSString(data: jsonData, encoding: NSUTF8StringEncoding)
+        }
+    }
+    
     class func GetGenderFilters() -> [Filter]{
         var filters = [Filter]()
-        filters.append(Filter(name: "Female", value: "F"))
-        filters.append(Filter(name: "Male", value: "M"))
+        filters.append(Filter(name: "Female", value: "T"))
+        filters.append(Filter(name: "Male", value: "F"))
         return filters
     }
     
@@ -85,12 +98,6 @@ class UtilityController {
             hud?.labelText = "Loading"
         }else{
             hud?.hide(true)
-        }
-    }
-    
-    class var ProgressBar: MBProgressHUD?{
-        get{
-            return hud
         }
     }
 }

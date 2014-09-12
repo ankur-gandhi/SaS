@@ -16,3 +16,5 @@
 #import "JJTabBarController.h"
 #import "JJTabBarSegue.h"
 #import "MBProgressHUD.h"
+#import "NSObject+ObjectMap.h"
+#import "JSONModelLib.h"
